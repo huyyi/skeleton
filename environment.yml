@@ -1,0 +1,8 @@
+name: /home/data/jinkin/Projects/skeleton/.env
+channels:
+  - defaults
+dependencies:
+  - python=3.6
+  - pytorch=1.3
+  - pyyaml
+prefix: /home/data/jinkin/Projects/skeleton/.env
