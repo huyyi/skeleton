@@ -1,0 +1,4 @@
+data:
+  raw_skes_path: "/home/data/jinkin/data/ntu/raw_skeleton"
+  # raw_skes_path: "/home/data/jinkin/data/ntu/test_data"
+  cores_cnt: 24 # cores to ues total_core=48
