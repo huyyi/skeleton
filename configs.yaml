@@ -1,4 +1,9 @@
 data:
   raw_skes_path: "/home/data/jinkin/data/ntu/raw_skeleton"
-  # raw_skes_path: "/home/data/jinkin/data/ntu/test_data"
   cores_cnt: 24 # cores to ues total_core=48
+  denoise_parameters:
+    noise_len_thres: 11
+    noise_spr_thres1: 0.8
+    noise_spr_thres2: 0.69754
+    noise_mot_thres_lo: 0.089925
+    noise_mot_thres_hi: 2
