@@ -6,10 +6,11 @@ import multiprocessing
 import os
 from pathlib import Path
 import yaml
+import pickle
 
 def read_config(parts: str)->dict:
     with open('configs.yaml', 'r') as f:
-        config = yaml.load(f, Loader=yaml.BaseLoader)
+        config = yaml.safe_load(f)
     return config[parts]
 
 def get_raw_bodies_data(ske_name: str):
@@ -96,17 +97,20 @@ def get_raw_bodies_data(ske_name: str):
     return {'name': ske_name, 'data': bodies_data, 'num_frames': num_frames - num_frames_drop}
 
 def get_raw_skes_data():
-    skes_name = np.loadtxt('test_data.txt', dtype=str)
+    skes_name = np.loadtxt('data_parser/ntu_info/skes_available_name.txt', dtype=str)
+    # TODO: 当前为测试使用前注释掉
+    # skes_name = np.loadtxt('test_data.txt', dtype=str)
     num_files = skes_name.size
     print('Found %d available skeleton files.' % num_files)
 
-    pool = multiprocessing.Pool(int(data_configs['cores_cnt']))
+    with multiprocessing.Pool(data_configs['cores_cnt']) as pool:
+        body_data = pool.map(get_raw_bodies_data, skes_name)
 
-    body_data = pool.map(get_raw_bodies_data, skes_name)
-
-    print(len(body_data))
-
-
+    with open(Path('data/ntu/ntu_raw.picle'), 'wb') as fw:
+        pickle.dump(body_data, fw, pickle.HIGHEST_PROTOCOL)
+    
+    frames_cnt = [x['num_frames'] for x in body_data]
+    np.savetxt(Path('data/ntu/frames_count.txt'), frames_cnt, fmt='%d')
 
 if __name__ == "__main__":
     if not osp.exists(Path('logs')):
