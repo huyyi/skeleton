@@ -94,7 +94,7 @@ def get_raw_bodies_data(ske_name: str):
         for body_data in bodies_data.values():
             body_data['motion'] = np.sum(np.var(body_data['joints'], axis=0))
 
-    return {'name': ske_name, 'data': bodies_data, 'num_frames': num_frames - num_frames_drop}
+    return {'name': ske_name, 'data': bodies_data, 'num_frames': num_frames - num_frames_drop, 'total_frames': num_frames}
 
 def get_raw_skes_data():
     skes_name = np.loadtxt('data_parser/ntu_info/skes_available_name.txt', dtype=str)
@@ -104,10 +104,10 @@ def get_raw_skes_data():
     with multiprocessing.Pool(data_configs['cores_cnt']) as pool:
         body_data = pool.map(get_raw_bodies_data, skes_name)
 
-    with open(Path('data/ntu/ntu_raw.picle'), 'wb') as fw:
+    with open(Path('data/ntu/ntu_raw.pickle'), 'wb') as fw:
         pickle.dump(body_data, fw, pickle.HIGHEST_PROTOCOL)
     
-    frames_cnt = [x['num_frames'] for x in body_data]
+    frames_cnt = [x['total_frames'] for x in body_data]
     np.savetxt(Path('data/ntu/frames_count.txt'), frames_cnt, fmt='%d')
 
 if __name__ == "__main__":
@@ -122,3 +122,5 @@ if __name__ == "__main__":
     frames_drop_logger.addHandler(logging.FileHandler(osp.join('logs', 'frames_drop.log')))
 
     get_raw_skes_data()
+    with open(Path('data/ntu/frames_drop_skes.pickle'), 'wb') as fw:
+        pickle.dump(frames_drop_skes, fw, pickle.HIGHEST_PROTOCOL)
