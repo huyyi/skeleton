@@ -98,8 +98,6 @@ def get_raw_bodies_data(ske_name: str):
 
 def get_raw_skes_data():
     skes_name = np.loadtxt('data_parser/ntu_info/skes_available_name.txt', dtype=str)
-    # TODO: 当前为测试使用前注释掉
-    # skes_name = np.loadtxt('test_data.txt', dtype=str)
     num_files = skes_name.size
     print('Found %d available skeleton files.' % num_files)
 
