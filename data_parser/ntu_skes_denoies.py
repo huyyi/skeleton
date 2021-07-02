@@ -5,8 +5,8 @@ import numpy as np
 import pickle
 import logging
 from utils.common import read_config
-import sys
 from pathlib import Path
+
 
 data_configs = read_config('data')
 raw_data_file = Path('data/ntu/ntu_raw.pickle')
@@ -415,7 +415,7 @@ def get_raw_denoised_data():
     #     frames_cnt.append(num_frames)
 
     with Pool(data_configs['cores_cnt']) as pool:
-        res = pool.map(process_multi, raw_skes_data[:10])
+        res = pool.map(process_multi, raw_skes_data)
     raw_denoised_joints = [x[0] for x in res]
     raw_denoised_colors = [x[1] for x in res]
     frames_cnt = [x[2] for x in res]
@@ -437,7 +437,7 @@ def get_raw_denoised_data():
 
 
 def process_multi(bodies_data):
-    ske_name = bodies_data['num_frames']
+    ske_name = bodies_data['name']
     print('Processing %s' % ske_name)
     num_bodies = len(bodies_data['data'])
 

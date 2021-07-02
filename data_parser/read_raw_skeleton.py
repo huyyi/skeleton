@@ -12,21 +12,6 @@ sys.path.append('..')
 
 
 def get_raw_bodies_data(ske_name: str):
-    """
-    Get raw bodies data from a skeleton sequence.
-
-    Each body's data is a dict that contains the following keys:
-      - joints: raw 3D joints positions. Shape: (num_frames x 25, 3)
-      - colors: raw 2D color locations. Shape: (num_frames, 25, 2)
-      - interval: a list which stores the frame indices of this body.
-      - motion: motion amount (only for the sequence with 2 or more bodyIDs).
-
-    Return:
-      a dict for a skeleton sequence with 3 key-value pairs:
-        - name: the skeleton filename.
-        - data: a dict which stores raw data of each body.
-        - num_frames: the number of valid frames.
-    """
     ske_file = osp.join(skes_path, ske_name + '.skeleton')
     assert osp.exists(ske_file), 'Error: Skeleton file %s not found' % ske_file
     # Read all data from .skeleton file into a list (in string format)
